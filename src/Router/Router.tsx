@@ -6,36 +6,30 @@ import Profile from "../Pages/Profile";
 import Tasks from "../Pages/Tasks";
 import SignIn from "../Pages/SignIn";
 import SignUp from "../Pages/SignUp";
-
-
-
+import ProtectedRoute from "../Router/ProtectedRoute";
 
 export const router: any = createBrowserRouter([
     {
-        path: "/",
-        element: <Layout/>,
-        errorElement: <NotFound/>,
+        element: <ProtectedRoute />,
         children: [
             {
                 path: "/",
-                element: <Home/>,
-            },
-            {
-                path: "profile",
-                element: <Profile/>
-            },
-            {
-                path:"tasks",
-                element:<Tasks/>
+                element: <Layout />,
+                errorElement: <NotFound />,
+                children: [
+                    { path: "/", element: <Home /> },
+                    { path: "profile", element: <Profile /> },
+                    { path: "tasks", element: <Tasks /> }
+                ]
             }
-        ],
+        ]
     },
     {
         path: "signin",
-        element: <SignIn/>
+        element: <SignIn />
     },
     {
-        path:"signup",
-        element: <SignUp/>
+        path: "signup",
+        element: <SignUp />
     }
 ]);
