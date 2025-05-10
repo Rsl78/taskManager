@@ -26,7 +26,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                 <AppBreadcrumb className="topbar-breadcrumb"></AppBreadcrumb>
             </div>
 
-            <Avatar onClick={ showProfileSidebar} image={"https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp"} className="flex align-items-center justify-content-center mr-2" size="xlarge" />
+            <Avatar shape="circle"  onClick={ showProfileSidebar} image={"https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp"} className="flex align-items-center justify-content-center mr-2" size="xlarge" />
             {/*<p*/}
             {/*onClick={showProfileSidebar}>*/}
             {/*    rf*/}

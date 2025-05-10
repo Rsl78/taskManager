@@ -48,22 +48,25 @@ const AppSubMenu = (props: MenuProps) => {
 
     return (
         <MenuProvider>
-            <ul className="layout-menu">
-                {props.model.map((item, i) => {
-                    return !item.seperator ? (
-                        <AppMenuitem
-                            item={item}
-                            root={true}
-                            index={i}
-                            key={item.label}
-                        />
-                    ) : (
-                        <li className="menu-separator"></li>
-                    );
-                })}
-            </ul>
-            {/*<AppProfileSidebar/>*/}
-            {/*<h1 className={''}>Hello</h1>*/}
+            <div className={" flex min-h-full flex-column justify-content-between"}>
+                <ul className="layout-menu">
+                    {props.model.map((item, i) => {
+                        return !item.seperator ? (
+                            <AppMenuitem
+                                item={item}
+                                root={true}
+                                index={i}
+                                key={item.label}
+                            />
+                        ) : (
+                            <li className="menu-separator"></li>
+                        );
+                    })}
+                </ul>
+                {/*<div >*/}
+                {/*    <p>Name</p>*/}
+                {/*</div>*/}
+            </div>
             <Tooltip
                 ref={tooltipRef}
                 target="li:not(.active-menuitem)>.tooltip-target"

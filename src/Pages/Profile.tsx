@@ -3,20 +3,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { classNames } from 'primereact/utils';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ProductService } from '../service/ProductService';
+// import { ProductService } from '../service/ProductService';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-// import { FileUpload } from 'primereact/fileupload';
-// import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
-// import { InputNumber,InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
-import useData from "../GlobalProvider/useData/useData";
-import useStore from "../layout/useStore";
 
 interface Task {
     id: string | null;
@@ -39,7 +34,10 @@ export default function Profile() {
     // const {user} = useData();
     // console.log(loginUser, "profile user");
 
-    const [tasks, setTasks] = useState<Task[]>([]);
+    const [tasks, setTasks] = useState<Task[]>(() => {
+        const stored = localStorage.getItem('tasks');
+        return stored ? JSON.parse(stored) : [];
+    });
     const [taskDialog, setTaskDialog] = useState<boolean>(false);
     const [deleteTaskDialog, setDeleteTaskDialog] = useState<boolean>(false);
     const [deleteTasksDialog, setDeleteTasksDialog] = useState<boolean>(false);
@@ -51,8 +49,22 @@ export default function Profile() {
     const dt = useRef<DataTable<Task[]>>(null);
 
     useEffect(() => {
-        ProductService.getProducts().then((data) => setTasks(data));
+        const storedTasks = localStorage.getItem('tasks');
+        if (storedTasks) {
+            setTasks(JSON.parse(storedTasks));
+        }
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, [tasks]);
+    // useEffect(() => {
+    //
+    // }, []);
+    // useEffect(() => {
+    //
+    //     ProductService.getProducts().then((data) => setTasks(data));
+    // }, []);
 
 
 
