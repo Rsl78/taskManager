@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import {Password} from "primereact/password";
 
 interface SignUpFormData{
     email: string;
@@ -62,13 +63,14 @@ const SignUp = () => {
                         </div>
                         <div className="w-full  mt-3">
                             <label htmlFor={"email"} className="block text-900 font-medium mb-2">Password:</label>
-                            <InputText
+                            <Password
                                 name="password"
                                 id={"password"}
                                 type="password"
                                 value={formData.password}
                                 onChange={handleOnChange}
                                 className="w-full"
+                                toggleMask
                             />
                         </div>
 
