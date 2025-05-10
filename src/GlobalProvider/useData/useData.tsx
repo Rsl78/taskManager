@@ -1,8 +1,15 @@
-import  {useState} from 'react';
+import {useState} from 'react';
 import {Breadcrumb, LayoutConfig, LayoutState} from "../../../types";
+
+interface userData {
+    id: string;
+    name: string;
+    email: string;
+}
 
 const UseData = () => {
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
+    const [loginUser, setLoginUser] = useState<userData|null>(null);
     const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
         ripple: true,
         inputStyle: "outlined",
@@ -99,7 +106,9 @@ const UseData = () => {
         breadcrumbs,
         setBreadcrumbs,
         accessToken,
-        setAccessToken
+        setAccessToken,
+        loginUser,
+        setLoginUser
     };
 };
 

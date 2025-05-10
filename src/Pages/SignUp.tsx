@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, {useRef, useState} from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import {Password} from "primereact/password";
+import {useNavigate} from "react-router-dom";
+import { Toast } from 'primereact/toast';
+
 
 interface SignUpFormData{
+    id: string;
     email: string;
     password: string;
     name: string;
@@ -11,25 +15,44 @@ interface SignUpFormData{
 
 const SignUp = () => {
     const [formData, setFormData] = useState<SignUpFormData>({
+        id: "",
         email: "",
         password: "",
         name:""
     })
+    const toast = useRef<Toast>(null);
+
+    const navigate = useNavigate();
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
             ...prevState,
-            [name]: value
+            [name]: value,
+            id: crypto.randomUUID()
         }))
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Submit");
-        // Add your form submission logic here
-        console.log(formData.email, formData.password);
-    }
+        try {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            users.push(formData);
+            localStorage.setItem('users', JSON.stringify(users));
+            setFormData({
+                id: "",
+                email: "",
+                password: "",
+                name: ""
+            });
+            toast.current?.show({severity:'success', summary: 'Success', detail:'Sign Up Successfully', life: 1000});
+            setTimeout(() => {
+                navigate("/signin");
+            }, 1000);
+        } catch (error) {
+            toast.current?.show({severity:'error', summary: 'Error', detail:'Sign Up Failed', life: 3000});
+        }
+    };
 
     return (
         <div>
@@ -37,6 +60,7 @@ const SignUp = () => {
             <div className={"flex min-h-screen flex-column align-items-center justify-content-center screen-h-min"}>
 
                 <div className="flex flex-column  border-round  md:w-3 w-full p-3 shadow-2 align-items-center justify-content-center">
+                    <Toast ref={toast} position="top-right" />
                     <h3>Sign Up</h3>
                     <form onSubmit={handleSubmit}>
                         <div className="w-full ">

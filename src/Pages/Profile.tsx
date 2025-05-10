@@ -15,6 +15,8 @@ import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
+import useData from "../GlobalProvider/useData/useData";
+import useStore from "../layout/useStore";
 
 interface Task {
     id: string | null;
@@ -32,6 +34,10 @@ export default function Profile() {
         priority: null,
         status: ''
     };
+
+
+    // const {user} = useData();
+    // console.log(loginUser, "profile user");
 
     const [tasks, setTasks] = useState<Task[]>([]);
     const [taskDialog, setTaskDialog] = useState<boolean>(false);
