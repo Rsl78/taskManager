@@ -6,6 +6,7 @@ const AppProfileSidebar = () => {
     const {
         layoutState,
         setLayoutState,
+        loginUser, setLoginUser,
     } = useStore().data;
 
     const onProfileSidebarHide = () => {
@@ -25,7 +26,7 @@ const AppProfileSidebar = () => {
             <div className="flex flex-column mx-auto md:mx-0">
                 <span className="mb-2 font-semibold">Welcome</span>
                 <span className="text-color-secondary font-medium mb-5">
-                    Isabella Andolini
+                    {loginUser?.name}
                 </span>
 
                 <ul className="list-none m-0 p-0">
@@ -39,7 +40,7 @@ const AppProfileSidebar = () => {
                                     Profile
                                 </span>
                                 <p className="text-color-secondary m-0">
-                                    Lorem ipsum date visale
+                                    {loginUser?.email}
                                 </p>
                             </div>
                         </div>
@@ -49,13 +50,10 @@ const AppProfileSidebar = () => {
                             <span>
                                 <i className="pi pi-power-off text-xl text-primary"></i>
                             </span>
-                            <div className="ml-3">
+                            <div onClick={() => setLoginUser(null)} className="ml-3">
                                 <span className="mb-2 font-semibold">
                                     Sign Out
                                 </span>
-                                <p className="text-color-secondary m-0">
-                                    Sed ut perspiciatis
-                                </p>
                             </div>
                         </div>
                     </li>

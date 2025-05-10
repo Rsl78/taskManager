@@ -3,6 +3,7 @@ import { MenuProvider } from "./context/menucontext";
 import { LayoutState } from "../../types";
 import {Link} from "react-router-dom";
 import useStore from "./useStore";
+import AppProfileSidebar from "./AppProfileSidebar";
 
 const AppSidebar = () => {
     const { setLayoutState } = useStore().data;
@@ -93,6 +94,7 @@ const AppSidebar = () => {
             <div className="layout-menu-container">
                 <MenuProvider>
                     <AppMenu />
+                    {/*<AppProfileSidebar/>*/}
                 </MenuProvider>
             </div>
         </>

@@ -4,6 +4,7 @@ import {  useEffect, useRef } from "react";
 import AppMenuitem from "./AppMenuitem";
 import { MenuProvider } from "./context/menucontext";
 import useStore from "./useStore";
+import AppProfileSidebar from "./AppProfileSidebar";
 
 const AppSubMenu = (props: MenuProps) => {
 
@@ -61,6 +62,8 @@ const AppSubMenu = (props: MenuProps) => {
                     );
                 })}
             </ul>
+            {/*<AppProfileSidebar/>*/}
+            {/*<h1 className={''}>Hello</h1>*/}
             <Tooltip
                 ref={tooltipRef}
                 target="li:not(.active-menuitem)>.tooltip-target"

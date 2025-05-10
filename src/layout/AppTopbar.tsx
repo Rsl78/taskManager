@@ -2,9 +2,10 @@ import type {AppTopbarRef} from "../../types";
 import {forwardRef, useImperativeHandle, useRef} from "react";
 import AppBreadcrumb from "./AppBreadCrumb";
 import useStore from "./useStore";
+import { Avatar } from 'primereact/avatar';
 
 const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
-    const { onMenuToggle } =
+    const { onMenuToggle, showProfileSidebar } =
         useStore().data;
     const menubuttonRef = useRef(null);
     useImperativeHandle(ref, () => ({
@@ -24,6 +25,12 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                 </button>
                 <AppBreadcrumb className="topbar-breadcrumb"></AppBreadcrumb>
             </div>
+
+            <Avatar onClick={ showProfileSidebar} image={"https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp"} className="flex align-items-center justify-content-center mr-2" size="xlarge" />
+            {/*<p*/}
+            {/*onClick={showProfileSidebar}>*/}
+            {/*    rf*/}
+            {/*</p>*/}
         </div>
     );
 });
