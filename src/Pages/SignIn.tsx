@@ -1,17 +1,11 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef } from 'react';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
-import useData from "../GlobalProvider/useData/useData";
 import {useNavigate} from "react-router-dom";
 import useStore from "../layout/useStore";
 import {useFormik} from "formik";
 import {Toast} from "primereact/toast";
-
-interface loginFormData {
-    email: string;
-    password: string;
-}
 
 interface errorType {
     email?: string;
