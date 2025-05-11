@@ -1,104 +1,106 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import useData from "../GlobalProvider/useData/useData";
 import {useNavigate} from "react-router-dom";
 import useStore from "../layout/useStore";
+import {useFormik} from "formik";
+import {Toast} from "primereact/toast";
 
 interface loginFormData {
     email: string;
     password: string;
 }
 
-const SignIn = () => {
-    const {
-        data: {
-            loginUser, setLoginUser
-        }
-    } = useStore();
-    const [formData, setFormData] = useState<loginFormData>({
-        email: "",
-        password: ""
-    })
+interface errorType {
+    email?: string;
+    password?: string;
+}
 
+const validate = (values: {email: string, password: string} ) => {
+    const errors:errorType = {};
+
+    if (!values.password) {
+        errors.password = 'Required';
+    } else if (values.password.length < 5) {
+        errors.password = 'Must be 5 characters or more';
+    }
+
+    if (!values.email) {
+        errors.email = 'Required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Invalid email address';
+    }
+    return errors;
+};
+
+
+
+
+const SignIn = () => {
+    const {data: {loginUser, setLoginUser}} = useStore();
+    const toast = useRef<Toast>(null);
     const navigate = useNavigate();
 
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value
-        }))
-    }
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+            password: '',
+        },
+        validate,
+        onSubmit: values => {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const validUser = users.find((user: any) => user.email === values.email && user.password === values.password);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("Submit");
-        // Add your form submission logic here
-        // console.log(formData.email, formData.password);
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const validUser = users.find((user: any) => user.email === formData.email && user.password === formData.password);
-
-        if (validUser) {
-            console.log(validUser, "validUser");
-            // setLoginUser({id: "1", name: "shuvo", email: "admin@gmail.com"});
-            // setAccessToken("change token")
-            setLoginUser({
-                id: validUser.id,
-                name: validUser.name,
-                email: validUser.email
-            });
-            // localStorage.setItem("loggedInUser", JSON.stringify({id: validUser.id, name: validUser.name, email: validUser.email}));
-            // setFormData({
-            //     email: "",
-            //     password: ""
-            // });
-            // console.log(user);
-            navigate('/');
-
-
-            // window.location.href = "/";
-        } else {
-            alert("Invalid email or password");
-        }
-    }
-
-    console.log("user", loginUser);
+            if (validUser) {
+                console.log(validUser, "validUser");
+                setLoginUser({
+                    id: validUser.id,
+                    name: validUser.name,
+                    email: validUser.email
+                });
+                navigate('/');
+            } else {
+                toast.current?.show({severity:'error', summary: 'Error', detail:'Invalid username or Password', life: 3000});
+            }
+        },
+    });
 
     return (
         <div>
-
             <div className={"flex min-h-screen flex-column align-items-center justify-content-center screen-h-min"}>
-
                 <div
                     className="flex flex-column  border-round  md:w-3 w-full p-3 shadow-2 align-items-center justify-content-center">
+                    <Toast ref={toast} position="top-right" />
                     <h3>Sign In</h3>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={formik.handleSubmit}>
                         <div className="w-full ">
                             <label htmlFor={"email"} className="block text-900 font-medium mb-2">Email:</label>
                             <InputText
                                 name="email"
                                 id={"email"}
                                 type="email"
-                                value={formData.email}
-                                onChange={handleOnChange}
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
                                 className="w-full"
                             />
                         </div>
+                        {formik.errors.email ? <div className={"text-red-500"}>{formik.errors.email}</div> : null}
                         <div className="w-full  mt-3">
                             <label htmlFor={"email"} className="block text-900 font-medium mb-2">Password:</label>
                             <Password
                                 name="password"
                                 id={"password"}
                                 type="password"
-                                value={formData.password}
-                                onChange={handleOnChange}
+                                value={formik.values.password}
+                                onChange={formik.handleChange}
                                 className="w-full"
                                 toggleMask
                             />
                         </div>
-
+                        {formik.errors.password ? <div className={"text-red-500"}>{formik.errors.password}</div> : null}
                         <div className={"flex mt-3 justify-content-center"}>
                             <Button type={"submit"} label="Submit"/>
                         </div>

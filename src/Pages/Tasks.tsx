@@ -24,7 +24,6 @@ export default function Tasks() {
 
     console.log(allTasks);
 
-
     return (
         <div className="card">
             <DataTable value={allTasks} removableSort tableStyle={{ minWidth: '50rem' }}>
