@@ -47,6 +47,18 @@ const AppProfileSidebar = () => {
                         </div>
                     </li>
                     <li>
+                        <div onClick={() => navigate("/profileupdate")} className="cursor-pointer  flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150">
+                            <span>
+                                <i className="pi pi-user text-xl text-primary"></i>
+                            </span>
+                            <div className="ml-3">
+                                <span className="mb-2 font-semibold">
+                                   Update Profile
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
                         <div onClick={() => setLoginUser(null)} className="cursor-pointer flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150">
                             <span>
                                 <i className="pi pi-power-off text-xl text-primary"></i>

@@ -7,6 +7,7 @@ import Tasks from "../Pages/Tasks";
 import SignIn from "../Pages/SignIn";
 import SignUp from "../Pages/SignUp";
 import ProtectedRoute from "../Router/ProtectedRoute";
+import ProfileUpdate from "../Pages/ProfileUpdate";
 
 export const router: any = createBrowserRouter([
     {
@@ -19,7 +20,8 @@ export const router: any = createBrowserRouter([
                 children: [
                     { path: "/", element: <Home /> },
                     { path: "profile", element: <Profile /> },
-                    { path: "tasks", element: <Tasks /> }
+                    { path: "tasks", element: <Tasks /> },
+                    {path: "profileupdate", element: <ProfileUpdate />},
                 ]
             }
         ]

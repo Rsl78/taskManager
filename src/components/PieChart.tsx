@@ -20,12 +20,14 @@ export default function PieChart({ PassedLabel, PassedData }: Props) {
                     backgroundColor: [
                         documentStyle.getPropertyValue('--blue-500'),
                         documentStyle.getPropertyValue('--yellow-500'),
-                        documentStyle.getPropertyValue('--green-500')
+                        documentStyle.getPropertyValue('--green-500'),
+                        documentStyle.getPropertyValue('--red-500')
                     ],
                     hoverBackgroundColor: [
                         documentStyle.getPropertyValue('--blue-400'),
                         documentStyle.getPropertyValue('--yellow-400'),
-                        documentStyle.getPropertyValue('--green-400')
+                        documentStyle.getPropertyValue('--green-400'),
+                        documentStyle.getPropertyValue('--red-500')
                     ]
                 }
             ]
@@ -45,8 +47,9 @@ export default function PieChart({ PassedLabel, PassedData }: Props) {
     }, [PassedLabel, PassedData]);
 
     return (
-        <div className="card flex justify-content-center">
-            <Chart type="pie" data={chartData} options={chartOptions} className="w-full md:w-30rem" />
-        </div>
+            <div>
+                <Chart type="pie" data={chartData} options={chartOptions} className="card w-30rem h-30rem" />
+                <h2>Title</h2>
+            </div>
     );
 }

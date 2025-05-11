@@ -12,16 +12,9 @@ import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
 import {Tag} from 'primereact/tag';
 import useStore from '../layout/useStore';
+import {Task} from "../../types/task";
 
-interface Task {
-    id: string | null;
-    title: string;
-    description: string;
-    priority: string | null;
-    status: string;
-    userId: string;
-    userName?: string;
-}
+
 
 export default function Profile() {
     const {data: {loginUser, allTasks:tasks, setAllTasks:setTasks}} = useStore();
