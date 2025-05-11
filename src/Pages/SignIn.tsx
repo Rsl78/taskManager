@@ -55,7 +55,6 @@ const SignIn = () => {
             const validUser = users.find((user: any) => user.email === values.email && user.password === values.password);
 
             if (validUser) {
-                console.log(validUser, "validUser");
                 setLoginUser({
                     id: validUser.id,
                     name: validUser.name,

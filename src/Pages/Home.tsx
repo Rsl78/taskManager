@@ -1,12 +1,10 @@
 import React from 'react';
 import useData from "../GlobalProvider/useData/useData";
 import useStore from "../layout/useStore";
+import PieChart from "../components/PieChart";
 
 
 const Home = () => {
-    // const {loginUser, accessToken} = useData();
-    // console.log("accessToken",accessToken );
-    // console.log("user", loginUser);
     const {
         data:{
             loginUser
@@ -15,7 +13,8 @@ const Home = () => {
     // const {loginUser, accessToken} = useData()
     return (
         <div className="card">
-            Hi! {loginUser?.name} <br/>
+            {/*Hi! {loginUser?.name} <br/>*/}
+            <PieChart PassedLabel={['A', 'B', 'C']} PassedData={[10,20,30]}/>
         </div>
     );
 };

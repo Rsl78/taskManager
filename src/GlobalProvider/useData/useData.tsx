@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Breadcrumb, LayoutConfig, LayoutState} from "../../../types";
 
 interface userData {
@@ -7,9 +7,20 @@ interface userData {
     email: string;
 }
 
+interface Task {
+    id: string | null;
+    title: string;
+    description: string;
+    priority: string | null;
+    status: string;
+    userId: string;
+    userName?: string;
+}
+
 const UseData = () => {
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
     const [loginUser, setLoginUser] = useState<userData|null>(null);
+    const [allTasks, setAllTasks] = useState<Task[]>([]);
     const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
         ripple: true,
         inputStyle: "outlined",
@@ -90,6 +101,13 @@ const UseData = () => {
         return window.innerWidth > 991;
     };
 
+    useEffect(() => {
+        const stored = localStorage.getItem('tasks');
+        if (stored) {
+            setAllTasks(JSON.parse(stored));
+        }
+    }, []);
+
 
     return {
         layoutConfig,
@@ -108,7 +126,9 @@ const UseData = () => {
         accessToken,
         setAccessToken,
         loginUser,
-        setLoginUser
+        setLoginUser,
+        allTasks,
+        setAllTasks
     };
 };
 

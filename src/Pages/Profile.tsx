@@ -24,7 +24,7 @@ interface Task {
 }
 
 export default function Profile() {
-    const {data: {loginUser}} = useStore();
+    const {data: {loginUser, allTasks:tasks, setAllTasks:setTasks}} = useStore();
     let emptyTask: Task = {
         userId: loginUser.id,
         userName: loginUser?.name,
@@ -34,19 +34,9 @@ export default function Profile() {
         priority: null,
         status: ''
     };
-    console.log('loginUser: ', loginUser);
 
-    // const {user} = useData();
-    // console.log(loginUser, "profile user");
-    // const stored2 = localStorage.getItem('tasks');
-    // const stores2Parse = stored2 ? JSON.parse(stored2) : [];
-    //
-    // const personalTasks = stores2Parse.filter((task: Task) => task.userId === loginUser.id);
-    // console.log(personalTasks);
+    console.log('allTasks from profile page', tasks)
 
-    const [tasks, setTasks] = useState<Task[]>([]);
-    // const [personalTasks, setPersonalTasks] = useState<Task[]>([]);
-    console.log('tasks: ', tasks)
     const [taskDialog, setTaskDialog] = useState<boolean>(false);
     const [deleteTaskDialog, setDeleteTaskDialog] = useState<boolean>(false);
     const [deleteTasksDialog, setDeleteTasksDialog] = useState<boolean>(false);
@@ -59,26 +49,12 @@ export default function Profile() {
 
     const personalTasks = tasks.filter((task: Task) => task.userId === loginUser.id);
 
-    // useEffect(() => {
-    //     const storedTasks = localStorage.getItem('tasks');
-    //     if (storedTasks) {
-    //         setTasks(JSON.parse(storedTasks));
-    //     }
-    // }, []);
-
     useEffect(() => {
         const stored: any = localStorage.getItem('tasks');
         if (stored) {
-            // setTasks(JSON.parse(stored).filter((task: Task) => task.userId === loginUser.id))
             setTasks(JSON.parse(stored))
-            // setPersonalTasks(JSON.parse(stored).filter((task: Task) => task.userId === loginUser.id))
         }
     }, [localStorage.getItem('tasks')]);
-
-    // useEffect(() => {
-    //     localStorage.setItem('tasks', JSON.stringify(tasks));
-    // }, [tasks]);
-
 
     const openNew = () => {
         setTask(emptyTask);
@@ -135,7 +111,7 @@ export default function Profile() {
     };
 
     const deleteTask = () => {
-        let _tasks = tasks.filter((val) => val.id !== task.id);
+        let _tasks = tasks.filter((val:Task) => val.id !== task.id);
 
         setTasks(_tasks);
         setDeleteTaskDialog(false);
@@ -167,16 +143,12 @@ export default function Profile() {
         return id;
     };
 
-    // const exportCSV = () => {
-    //     dt.current?.exportCSV();
-    // };
-
     const confirmDeleteSelected = () => {
         setDeleteTasksDialog(true);
     };
 
     const deleteSelectedTasks = () => {
-        let _tasks = tasks.filter((val) => !selectedTasks.includes(val));
+        let _tasks = tasks.filter((val: Task) => !selectedTasks.includes(val));
 
         setTasks(_tasks);
         setDeleteTasksDialog(false);
@@ -287,7 +259,6 @@ export default function Profile() {
             <Toast ref={toast}/>
             <div className="card">
                 <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
-                {/*<Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>*/}
 
                 <DataTable ref={dt} value={personalTasks} selection={selectedTasks}
                            onSelectionChange={(e) => {

@@ -1,28 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-// import { ProductService } from './service/ProductService';
-interface Task {
-    id: string | null;
-    title: string;
-    description: string;
-    priority: string | null;
-    status: string;
-    userId: string;
-    userName?: string;
-}
+import useStore from "../layout/useStore";
+
 
 export default function Tasks() {
-    const [allTasks, setAllTasks] = useState<Task[]>([]);
-
+    const {data:{allTasks, setAllTasks}} = useStore()
     useEffect(() => {
         const stored = localStorage.getItem('tasks');
         if (stored) {
             setAllTasks(JSON.parse(stored));
         }
     }, []);
-
-    console.log(allTasks);
 
     return (
         <div className="card">
