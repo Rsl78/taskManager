@@ -12,6 +12,7 @@ import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
+import  useStore  from '../layout/useStore';
 
 interface Task {
     id: string | null;
@@ -19,24 +20,32 @@ interface Task {
     description: string;
     priority: string | null;
     status: string;
+    userId: string;
 }
 
 export default function Profile() {
+    const {data: {loginUser}} = useStore();
     let emptyTask: Task = {
+        userId: loginUser.id,
         id: null,
         title: '',
         description: '',
         priority: null,
         status: ''
     };
-
+    console.log(loginUser);
 
     // const {user} = useData();
     // console.log(loginUser, "profile user");
+   // const stored2 = localStorage.getItem('tasks');
+   // const stores2Parse = stored2 ? JSON.parse(stored2) : [];
+   //
+   // const personalTasks = stores2Parse.filter((task: Task) => task.userId === loginUser.id);
+   // console.log(personalTasks);
 
     const [tasks, setTasks] = useState<Task[]>(() => {
         const stored = localStorage.getItem('tasks');
-        return stored ? JSON.parse(stored) : [];
+        return stored ? JSON.parse(stored).filter((task: Task) => task.userId === loginUser.id) : [];
     });
     const [taskDialog, setTaskDialog] = useState<boolean>(false);
     const [deleteTaskDialog, setDeleteTaskDialog] = useState<boolean>(false);
@@ -58,14 +67,6 @@ export default function Profile() {
     useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }, [tasks]);
-    // useEffect(() => {
-    //
-    // }, []);
-    // useEffect(() => {
-    //
-    //     ProductService.getProducts().then((data) => setTasks(data));
-    // }, []);
-
 
 
     const openNew = () => {
@@ -325,7 +326,7 @@ export default function Profile() {
                             <label htmlFor="priority3">High</label>
                         </div>
                         <div className="field-radiobutton col-6">
-                            <RadioButton inputId="priority4" name="priority" value="Fitness" onChange={onPriorityChange} checked={task.priority === 'Very High'} />
+                            <RadioButton inputId="priority4" name="priority" value="Very High" onChange={onPriorityChange} checked={task.priority === 'Very High'} />
                             <label htmlFor="priority4">Very High</label>
                         </div>
                     </div>
