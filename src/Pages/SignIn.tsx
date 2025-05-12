@@ -33,7 +33,7 @@ const validate = (values: {email: string, password: string} ) => {
 
 
 const SignIn = () => {
-    const {data: { setLoginUser, loginUser}} = useStore();
+    const {data: { setLoginUser}} = useStore();
     const toast = useRef<Toast>(null);
     const navigate = useNavigate();
 
