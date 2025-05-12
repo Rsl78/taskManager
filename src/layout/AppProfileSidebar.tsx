@@ -8,6 +8,7 @@ const AppProfileSidebar = () => {
         layoutState,
         setLayoutState,
         loginUser, setLoginUser,
+        setIsLoggedIn,
     } = useStore().data;
 
     const onProfileSidebarHide = () => {
@@ -59,7 +60,13 @@ const AppProfileSidebar = () => {
                         </div>
                     </li>
                     <li>
-                        <div onClick={() => setLoginUser(null)} className="cursor-pointer flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150">
+                        <div onClick={() => {
+                            localStorage.removeItem('loggedInUser');
+                            localStorage.setItem('isLoggedIn', "false");
+                            setLoginUser(null);
+                            setIsLoggedIn(false);
+
+                        }} className="cursor-pointer flex surface-border mb-3 p-3 align-items-center border-1 surface-border border-round hover:surface-hover transition-colors transition-duration-150">
                             <span>
                                 <i className="pi pi-power-off text-xl text-primary"></i>
                             </span>

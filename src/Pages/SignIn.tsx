@@ -1,4 +1,4 @@
-import React, {useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
@@ -33,7 +33,7 @@ const validate = (values: {email: string, password: string} ) => {
 
 
 const SignIn = () => {
-    const {data: { setLoginUser}} = useStore();
+    const {data: { setLoginUser, loginUser}} = useStore();
     const toast = useRef<Toast>(null);
     const navigate = useNavigate();
 
@@ -49,17 +49,21 @@ const SignIn = () => {
             const validUser = users.find((user: any) => user.email === values.email && user.password === values.password);
 
             if (validUser) {
-                setLoginUser({
-                    id: validUser.id,
-                    name: validUser.name,
-                    email: validUser.email
-                });
+                // setLoginUser({
+                //     id: validUser.id,
+                //     name: validUser.name,
+                //     email: validUser.email
+                // });
+                localStorage.setItem('loggedInUser', JSON.stringify({id: validUser.id, name: validUser.name, email: validUser.email}));
+                localStorage.setItem('isLoggedIn', "1");
                 navigate('/');
             } else {
                 toast.current?.show({severity:'error', summary: 'Error', detail:'Invalid username or Password', life: 3000});
             }
         },
     });
+
+
 
     return (
         <div>

@@ -3,11 +3,12 @@ import React from 'react';
 import useStore from "../layout/useStore";
 import PieChart from "../components/PieChart";
 import {Task} from "../../types/task";
+import SummaryCard from "../components/SummaryCard";
 
 
 const Home = () => {
     const {data:{allTasks}} = useStore()
-    console.log(allTasks)
+    // console.log(allTasks)
 
     const statusCounts = allTasks.reduce((acc: Record<string, number>, task: Task) => {
         const status = task.status;
@@ -22,10 +23,11 @@ const Home = () => {
     }, {});
 
     return (
-        <div className="card ">
-            <div className={"flex justify-content-between"}>
-                <PieChart PassedLabel={Object.keys(statusCounts)} PassedData={(Object.values(statusCounts))}/>
-                <PieChart PassedLabel={Object.keys(priorityCounts)} PassedData={(Object.values(priorityCounts))}/>
+        <div className="card min-h-full">
+            <div className={"flex flex-wrap justify-content-between"}>
+                <SummaryCard/>
+                <PieChart PassedLabel={Object.keys(statusCounts)} PassedData={(Object.values(statusCounts))} Title={"Assign task status"}/>
+                <PieChart PassedLabel={Object.keys(priorityCounts)} PassedData={(Object.values(priorityCounts))} Title={"Task Priority "}/>
             </div>
         </div>
     );

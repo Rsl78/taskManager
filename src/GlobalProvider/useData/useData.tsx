@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Breadcrumb, LayoutConfig, LayoutState} from "../../../types";
+import {Task} from "../../../types/task";
 
 interface userData {
     id: string;
@@ -7,19 +8,11 @@ interface userData {
     email: string;
 }
 
-interface Task {
-    id: string | null;
-    title: string;
-    description: string;
-    priority: string | null;
-    status: string;
-    userId: string;
-    userName?: string;
-}
 
 const UseData = () => {
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
     const [loginUser, setLoginUser] = useState<userData|null>(null);
+    const [isLoggedIn,setIsLoggedIn] = useState(true)
     const [allTasks, setAllTasks] = useState<Task[]>([]);
     const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
         ripple: true,
@@ -108,6 +101,15 @@ const UseData = () => {
         }
     }, []);
 
+    // useEffect(() => {
+    //     const stored = localStorage.getItem('loggedInUser');
+    //     if (stored) {
+    //         setLoginUser(JSON.parse(stored));
+    //         console.log(loginUser)
+    //     }
+    // },[localStorage.getItem('loggedInUser')]);
+    // const loggedInUser: userData|| null = JSON.parse(localStorage.getItem('loggedInUser'))|| null;
+
 
     return {
         layoutConfig,
@@ -128,7 +130,8 @@ const UseData = () => {
         loginUser,
         setLoginUser,
         allTasks,
-        setAllTasks
+        setAllTasks,
+        isLoggedIn,setIsLoggedIn
     };
 };
 

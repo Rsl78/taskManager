@@ -4,9 +4,10 @@ import { Chart } from 'primereact/chart';
 interface Props {
     PassedLabel: string[];
     PassedData: number[];
+    Title: string,
 }
 
-export default function PieChart({ PassedLabel, PassedData }: Props) {
+export default function PieChart({ PassedLabel, PassedData,Title }: Props) {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
 
@@ -47,9 +48,9 @@ export default function PieChart({ PassedLabel, PassedData }: Props) {
     }, [PassedLabel, PassedData]);
 
     return (
-            <div>
-                <Chart type="pie" data={chartData} options={chartOptions} className="card w-30rem h-30rem" />
-                <h2>Title</h2>
+            <div className={"flex flex-column card flex align-items-center justify-content-center w-30rem h-30rem "}>
+                <Chart type="pie" data={chartData} options={chartOptions} className=" w-25rem h-25rem" />
+                <h6 className={"text-center"}>{Title}</h6>
             </div>
     );
 }
