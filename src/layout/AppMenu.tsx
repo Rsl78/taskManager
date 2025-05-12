@@ -2,7 +2,9 @@ import type {MenuModel} from "../../types";
 import AppSubMenu from "./AppSubMenu";
 
 const AppMenu = () => {
-    const model: MenuModel[] = [
+    const user = JSON.parse(localStorage.getItem("loggedInUser") || "{}");
+    const isAdmin = user?.role === "admin";
+    const menu= isAdmin ? [
         {
             label: "Dashboards",
             icon: "pi pi-home",
@@ -24,7 +26,25 @@ const AppMenu = () => {
                 }
             ],
         },
+    ] : [
+        {
+            label: "Dashboards",
+            icon: "pi pi-home",
+            items: [
+                {
+                    label: "Home",
+                    icon: "pi pi-fw pi-home",
+                    to: "/",
+                },
+                {
+                    label:"tasks",
+                    icon: "pi pi-fw pi-list",
+                    to: "/tasks",
+                }
+            ],
+        },
     ];
+    const model: MenuModel[] = menu;
 
     return <AppSubMenu model={model}/>;
 };

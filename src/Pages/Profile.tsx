@@ -8,9 +8,8 @@ import {useFormik} from "formik";
 // import {Password} from 'primereact/password';
 import {Password} from "primereact/password";
 import {Button} from "primereact/button";
-
-// import { FloatLabel } from "primereact/floatlabel";
-
+import {Column} from "primereact/column";
+import {DataTable} from "primereact/datatable";
 
 interface UpdateFormValuesError {
     name?: string;
@@ -64,8 +63,10 @@ const passwordValidate = (values: { oldPassword: string, newPassword: string, co
 }
 
 export default function Profile() {
-    const {data: {loginUser, setLoginUser, setIsLoggedIn}} = useStore()
+    const {data: {loginUser, setLoginUser, setIsLoggedIn, allTasks}} = useStore()
     const toast = useRef<Toast>(null);
+
+    const personalTasks = allTasks.filter((task: any) => task.assignPerson === loginUser.name);
     // const navigate = useNavigate();
 
     const passwordUpdate = useFormik({
@@ -133,7 +134,6 @@ export default function Profile() {
     return (
         <div className="card  ">
             <TabView>
-
                 {/*Profile update Tab*/}
                 <TabPanel header="Profile" leftIcon="pi pi-user mr-2">
                     <Toast ref={toast} position="top-right"/>
@@ -239,7 +239,14 @@ export default function Profile() {
 
                 {/*Tasks tab*/}
                 <TabPanel header="Tasks" leftIcon="pi pi-fw pi-list mr-2">
-
+                    <DataTable value={personalTasks} removableSort tableStyle={{ minWidth: '50rem' }}>
+                        <Column field="id" header="ID" sortable ></Column>
+                        <Column field="assignPerson" header="Assign Person" sortable ></Column>
+                        <Column field="title" header="Title" sortable ></Column>
+                        <Column field="description" header="Description" sortable ></Column>
+                        <Column field="priority" header="Priority" sortable ></Column>
+                        <Column field="status" header="Status" sortable ></Column>
+                    </DataTable>
                 </TabPanel>
 
 

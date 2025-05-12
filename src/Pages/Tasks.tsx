@@ -5,19 +5,12 @@ import useStore from "../layout/useStore";
 
 
 export default function Tasks() {
-    const {data:{allTasks, setAllTasks}} = useStore()
-    useEffect(() => {
-        const stored = localStorage.getItem('tasks');
-        if (stored) {
-            setAllTasks(JSON.parse(stored));
-        }
-    }, []);
-
+    const {data:{allTasks}} = useStore()
     return (
         <div className="card">
             <DataTable value={allTasks} removableSort tableStyle={{ minWidth: '50rem' }}>
                 <Column field="id" header="ID" sortable ></Column>
-                <Column field="userName" header="User Name" sortable ></Column>
+                <Column field="assignPerson" header="Assign Person" sortable ></Column>
                 <Column field="title" header="Title" sortable ></Column>
                 <Column field="description" header="Description" sortable ></Column>
                 <Column field="priority" header="Priority" sortable ></Column>

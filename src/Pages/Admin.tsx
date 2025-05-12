@@ -13,7 +13,15 @@ import {InputText} from 'primereact/inputtext';
 import {Tag} from 'primereact/tag';
 import useStore from '../layout/useStore';
 import {Task} from "../../types/task";
+import { Dropdown } from 'primereact/dropdown';
 
+// interface UsersType {
+//     id?: string;
+//     name?: string;
+//     email?: string;
+//     password?: string;
+//     role?: string;
+// }
 
 
 export default function Admin() {
@@ -25,9 +33,9 @@ export default function Admin() {
         title: '',
         description: '',
         priority: null,
-        status: ''
+        status: '',
+        assignPerson:null
     };
-
     // console.log('allTasks from profile page', tasks)
 
     const [taskDialog, setTaskDialog] = useState<boolean>(false);
@@ -39,6 +47,9 @@ export default function Admin() {
     const [globalFilter, setGlobalFilter] = useState<string>('');
     const toast = useRef<Toast>(null);
     const dt = useRef<DataTable<Task[]>>(null);
+    const [users, setUsers] = useState<string[]>([]);
+
+
 
     const personalTasks = tasks.filter((task: Task) => task.userId === loginUser.id);
 
@@ -48,6 +59,16 @@ export default function Admin() {
             setTasks(JSON.parse(stored))
         }
     }, [localStorage.getItem('tasks')]);
+
+    useEffect(() => {
+        const userStored: any = localStorage.getItem('users');
+        if (userStored) {
+           const parsedUsers =  JSON.parse(userStored);
+            const userNames = parsedUsers.map((user: any) => user.name);
+            setUsers(userNames);
+        }
+    }, [localStorage.getItem('users')]);
+
 
     const openNew = () => {
         setTask(emptyTask);
@@ -149,12 +170,12 @@ export default function Admin() {
         toast.current?.show({severity: 'success', summary: 'Successful', detail: 'Tasks Deleted', life: 3000});
     };
 
-    const onPriorityChange = (e: RadioButtonChangeEvent) => {
-        let _task = {...task};
-
-        _task['priority'] = e.value;
-        setTask(_task);
-    };
+    // const onPriorityChange = (e: RadioButtonChangeEvent) => {
+    //     let _task = {...task};
+    //
+    //     _task['priority'] = e.value;
+    //     setTask(_task);
+    // };
 
     const onStatusChange = (e: RadioButtonChangeEvent) => {
         let _task = {...task};
@@ -271,6 +292,7 @@ export default function Admin() {
                     <Column field="priority" header="Priority" sortable style={{minWidth: '10rem'}}></Column>
                     <Column field="status" header="Status" body={statusBodyTemplate} sortable
                             style={{minWidth: '12rem'}}></Column>
+                    <Column field="assignPerson" header="Assign person" sortable style={{minWidth: '12rem'}}></Column>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}></Column>
                 </DataTable>
             </div>
@@ -294,33 +316,15 @@ export default function Admin() {
                                    cols={20}/>
                 </div>
 
-                <div className="field">
-                    <label className="mb-3 font-bold">Priority</label>
-                    <div className="formgrid grid">
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="priority1" name="priority" value="Low" onChange={onPriorityChange}
-                                         checked={task.priority === 'Low'}/>
-                            <label htmlFor="priority1">Low</label>
-                        </div>
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="priority2" name="priority" value="Medium" onChange={onPriorityChange}
-                                         checked={task.priority === 'Medium'}/>
-                            <label htmlFor="category2">Medium</label>
-                        </div>
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="priority3" name="priority" value="High" onChange={onPriorityChange}
-                                         checked={task.priority === 'High'}/>
-                            <label htmlFor="priority3">High</label>
-                        </div>
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="priority4" name="priority" value="Very High"
-                                         onChange={onPriorityChange} checked={task.priority === 'Very High'}/>
-                            <label htmlFor="priority4">Very High</label>
-                        </div>
-                    </div>
+                <div className={"flex justify-content-between"}>
+                    <Dropdown value={task.priority} onChange={(e) => setTask({...task, priority: e.value})} options={['Low', 'Medium', 'High','Very High']}
+                              placeholder="Select Priority" className="w-full md:w-14rem" />
+                    <Dropdown value={task.assignPerson} onChange={(e) => setTask({...task, assignPerson: e.value})} options={users}
+                              placeholder="Select Assign Person" className="w-full md:w-14rem" />
                 </div>
 
-                <div className="field">
+
+                <div className="field pt-2">
                     <label className="mb-3 font-bold">Status</label>
                     <div className="formgrid grid">
                         <div className="field-radiobutton col-6">

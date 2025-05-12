@@ -6,5 +6,6 @@ export interface Task {
     status: string;
     userId: string;
     userName?: string;
+    assignPerson?: string|null;
 }
 
