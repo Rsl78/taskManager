@@ -5,11 +5,13 @@ import {Password} from "primereact/password";
 import {useNavigate} from "react-router-dom";
 import { Toast } from 'primereact/toast';
 import { useFormik } from 'formik';
+import { Checkbox } from "primereact/checkbox";
 
 interface errorType {
     name?: string;
     email?: string;
     password?: string;
+    role?: string;
 }
 
 const validate = (values: {email: string, password: string, name: string} ) => {
@@ -42,6 +44,7 @@ const SignUp = () => {
             name: '',
             email: '',
             password: '',
+            role: 'user',
         },
         validate,
         onSubmit: values => {
@@ -57,6 +60,8 @@ const SignUp = () => {
             } catch (error) {
                 toast.current?.show({severity:'error', summary: 'Error', detail:'Sign Up Failed', life: 3000});
             }
+
+            // console.log(values);
         },
     });
 
@@ -104,6 +109,17 @@ const SignUp = () => {
                             />
                         </div>
                         {formik.errors.password ? <div className={"text-red-500"}>{formik.errors.password}</div> : null}
+
+                        <div className="flex align-items-center">
+                            <Checkbox
+                                inputId="role"
+                                name="role"
+                                checked={formik.values.role === "admin"}
+                                onChange={e => formik.setFieldValue("role", e.checked ? "admin" : "user")}
+                            />
+                            <label htmlFor="role" className="ml-2">Admin</label>
+                        </div>
+
                         <div className={"flex mt-3 justify-content-center"}>
                             <Button type={"submit"} label="Submit" />
                         </div>

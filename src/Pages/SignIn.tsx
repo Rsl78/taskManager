@@ -1,19 +1,19 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useRef} from 'react';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {useNavigate} from "react-router-dom";
+
 import useStore from "../layout/useStore";
 import {useFormik} from "formik";
 import {Toast} from "primereact/toast";
+import {errorType} from "../../types/error";
+// import {errorType} from "../../types/task";
 
-interface errorType {
-    email?: string;
-    password?: string;
-}
+
 
 const validate = (values: {email: string, password: string} ) => {
-    const errors:errorType = {};
+    const errors:errorType= {};
 
     if (!values.password) {
         errors.password = 'Required';
@@ -42,6 +42,7 @@ const SignIn = () => {
             name: '',
             email: '',
             password: '',
+            role: '',
         },
         validate,
         onSubmit: values => {
@@ -49,13 +50,14 @@ const SignIn = () => {
             const validUser = users.find((user: any) => user.email === values.email && user.password === values.password);
 
             if (validUser) {
-                // setLoginUser({
-                //     id: validUser.id,
-                //     name: validUser.name,
-                //     email: validUser.email
-                // });
-                localStorage.setItem('loggedInUser', JSON.stringify({id: validUser.id, name: validUser.name, email: validUser.email}));
+                localStorage.setItem('loggedInUser', JSON.stringify({id: validUser.id, name: validUser.name, email: validUser.email, role: validUser.role}));
                 localStorage.setItem('isLoggedIn', "1");
+                setLoginUser({
+                    id: validUser.id,
+                    name: validUser.name,
+                    email: validUser.email,
+                    role: validUser.role
+                });
                 navigate('/');
             } else {
                 toast.current?.show({severity:'error', summary: 'Error', detail:'Invalid username or Password', life: 3000});
@@ -98,6 +100,7 @@ const SignIn = () => {
                             />
                         </div>
                         {formik.errors.password ? <div className={"text-red-500"}>{formik.errors.password}</div> : null}
+
                         <div className={"flex mt-3 justify-content-center"}>
                             <Button type={"submit"} label="Submit"/>
                         </div>

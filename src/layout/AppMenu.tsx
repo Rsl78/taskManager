@@ -12,11 +12,11 @@ const AppMenu = () => {
                     icon: "pi pi-fw pi-home",
                     to: "/",
                 },
-                // {
-                //     label: "profile",
-                //     icon: "pi pi-fw pi-user",
-                //     to: "/profile",
-                // },
+                {
+                    label: "Admin",
+                    icon: "pi pi-fw pi-user",
+                    to: "/admin",
+                },
                 {
                     label:"tasks",
                     icon: "pi pi-fw pi-list",

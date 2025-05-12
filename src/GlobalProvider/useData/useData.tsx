@@ -6,12 +6,18 @@ interface userData {
     id: string;
     name: string;
     email: string;
+    role?: string;
 }
 
 
 const UseData = () => {
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
-    const [loginUser, setLoginUser] = useState<userData|null>(null);
+    const [loginUser, setLoginUser] = useState<userData|null>({
+        id:"",
+        name: "",
+        email: "",
+        role:"user"
+    });
     const [isLoggedIn,setIsLoggedIn] = useState(true)
     const [allTasks, setAllTasks] = useState<Task[]>([]);
     const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
