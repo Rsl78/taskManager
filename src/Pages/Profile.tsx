@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {TabView, TabPanel} from 'primereact/tabview';
 import useStore from "../layout/useStore";
 import {InputText} from 'primereact/inputtext';
@@ -10,10 +10,16 @@ import {Password} from "primereact/password";
 import {Button} from "primereact/button";
 import {Column} from "primereact/column";
 import {DataTable} from "primereact/datatable";
-
+import { Avatar } from 'primereact/avatar';
+// import { Badge } from 'primereact/badge';
+import { Dialog } from 'primereact/dialog';
 interface UpdateFormValuesError {
     name?: string;
     email?: string;
+}
+
+interface UpdateImageFormValuesError {
+    imageUrl?: string;
 }
 
 interface UpdatePasswordFormValuesError {
@@ -65,6 +71,7 @@ const passwordValidate = (values: { oldPassword: string, newPassword: string, co
 export default function Profile() {
     const {data: {loginUser, setLoginUser, setIsLoggedIn, allTasks}} = useStore()
     const toast = useRef<Toast>(null);
+    const [showImgModal, setShowImgModal] = useState(false);
 
     const personalTasks = allTasks.filter((task: any) => task.assignPerson === loginUser.name);
     // const navigate = useNavigate();
@@ -101,7 +108,6 @@ export default function Profile() {
 
         },
     })
-
     const informationUpdate = useFormik({
         initialValues: {
             name: loginUser.name,
@@ -130,6 +136,41 @@ export default function Profile() {
 
         },
     });
+    const imageUpdate = useFormik({
+            initialValues: {
+                imageUrl: loginUser.imageUrl,
+            },
+            validate: (values) => {
+                const errors: UpdateImageFormValuesError = {};
+                if (!values.imageUrl) {
+                    errors.imageUrl = 'Required';
+                }
+                return errors;
+            },
+            onSubmit: values => {
+                setShowImgModal(false)
+                // console.log(e.target);
+                const usersList = JSON.parse(localStorage.getItem("users") || '{}');
+                const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || '{}');
+                const updatedUsersList = usersList.map((user: any) => {
+                    if (user.id === loggedInUser.id) {
+                        return {...user, ...values};
+                    }
+                    return user;
+                });
+
+                localStorage.setItem("users", JSON.stringify(updatedUsersList));
+                localStorage.setItem("loggedInUser", JSON.stringify({...loggedInUser, ...values}));
+                setLoginUser({...loggedInUser, ...values});
+                toast.current?.show({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Profile Updated Successfully',
+                    life: 1000
+                });
+            },
+        }
+    )
 
     return (
         <div className="card  ">
@@ -140,6 +181,13 @@ export default function Profile() {
                     <div
                         className={"flex flex-column  border-round  md:w-3 w-full align-items-center justify-content-center"}>
                         <form onSubmit={informationUpdate.handleSubmit}>
+                            <div>
+                                <Avatar className="h-8rem w-8rem relative" image={loginUser && loginUser.image? loginUser.imageUrl : "https://imgur.com/a/dih0Vz0"} shape="circle">
+                                    <div onClick={() => setShowImgModal(true)} className="absolute border-circle bg-white flex bottom-0 justify-content-center align-items-center right-0 border-2 h-2rem w-2rem">
+                                            <i className="pi pi-user-edit z-5" />
+                                    </div>
+                                </Avatar>
+                            </div>
                             <div className="flex-auto ">
                                 <label htmlFor="name" className="block text-900 font-medium mb-2">
                                     Name
@@ -175,6 +223,40 @@ export default function Profile() {
                             </div>
                         </form>
                     </div>
+
+                    <Dialog
+                        visible={showImgModal}
+                        style={{ width: '50vw' }}
+                        onHide={() => {if (!showImgModal) return; setShowImgModal(false); }}
+                        // footer={imgModalFooterContent}
+                    >
+                        <form onSubmit={imageUpdate.handleSubmit} className={"flex flex-column gap-5"}>
+                            <div className="flex flex-column gap-2">
+                                <label htmlFor="image">New Image Url</label>
+                                <InputText
+                                    id="imageUrl"
+                                    name={"imageUrl"}
+                                    // value={"image"}
+                                    onChange={imageUpdate.handleChange}
+                                    value={imageUpdate.values.imageUrl}
+                                    aria-describedby="username-image-help"
+                                />
+                                <small id="username-image-help">
+                                    Enter your image url to change the profile image.
+                                </small>
+
+                            </div>
+                            <div className={"flex justify-content-end"}>
+                                <div className={""}>
+                                    <Button label="No" icon="pi pi-times" onClick={(e) => {
+                                        e.preventDefault();
+                                        setShowImgModal(false)
+                                    }} className="p-button-text" />
+                                    <Button type={'submit'} label="Yes" icon="pi pi-check" autoFocus />
+                                </div>
+                            </div>
+                        </form>
+                    </Dialog>
                 </TabPanel>
 
                 {/*Password update tab*/}

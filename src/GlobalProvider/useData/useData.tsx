@@ -7,6 +7,7 @@ interface userData {
     name: string;
     email: string;
     role?: string;
+    imageUrl ?: string | null;
 }
 
 
@@ -16,7 +17,8 @@ const UseData = () => {
         id:"",
         name: "",
         email: "",
-        role:"user"
+        role:"user",
+        imageUrl: null,
     });
     const [isLoggedIn,setIsLoggedIn] = useState(true)
     const [allTasks, setAllTasks] = useState<Task[]>([]);
