@@ -8,6 +8,14 @@ import SummaryCard from "../components/SummaryCard";
 
 const Home = () => {
     const {data:{allTasks}} = useStore()
+
+    const totalTask = allTasks.length;
+    const completedTask = allTasks.filter((task: Task)=> task.status === "COMPLETED").length;
+    const inCompleteTask = totalTask- completedTask;
+
+    const stringifyData = localStorage.getItem("users");
+    const parsedData = stringifyData ? JSON.parse(stringifyData) : [];
+    const totalUser = parsedData.length;
     // console.log(allTasks)
 
     const statusCounts = allTasks.reduce((acc: Record<string, number>, task: Task) => {
@@ -24,10 +32,17 @@ const Home = () => {
 
     return (
         <div className="card min-h-full">
-            <div className={"flex flex-wrap justify-content-between"}>
-                <SummaryCard/>
-                <PieChart PassedLabel={Object.keys(statusCounts)} PassedData={(Object.values(statusCounts))} Title={"Assign task status"}/>
-                <PieChart PassedLabel={Object.keys(priorityCounts)} PassedData={(Object.values(priorityCounts))} Title={"Task Priority "}/>
+            <div className={"flex flex-column"}>
+                <div className={"flex  justify-content-between gap-2"}>
+                    <SummaryCard count={totalTask} title={"Total Task"}/>
+                    <SummaryCard count={completedTask} title={"Completed Task"}/>
+                    <SummaryCard count={inCompleteTask} title={"Incomplete Task"}/>
+                    <SummaryCard count={totalUser} title={"Total User"}/>
+                </div>
+                <div className={"flex  justify-content-between gap-2"}>
+                    <PieChart PassedLabel={Object.keys(statusCounts)} PassedData={(Object.values(statusCounts))} Title={"Assign task status"}/>
+                    <PieChart PassedLabel={Object.keys(priorityCounts)} PassedData={(Object.values(priorityCounts))} Title={"Task Priority "}/>
+                </div>
             </div>
         </div>
     );

@@ -48,7 +48,7 @@ export default function PieChart({ PassedLabel, PassedData,Title }: Props) {
     }, [PassedLabel, PassedData]);
 
     return (
-            <div className={"flex flex-column card flex align-items-center justify-content-center w-30rem h-30rem "}>
+            <div className={"flex flex-column card flex align-items-center justify-content-center w-full h-full "}>
                 <Chart type="pie" data={chartData} options={chartOptions} className=" w-25rem h-25rem" />
                 <h6 className={"text-center"}>{Title}</h6>
             </div>
