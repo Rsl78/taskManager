@@ -25,7 +25,7 @@ import { Dropdown } from 'primereact/dropdown';
 
 
 export default function Admin() {
-    const {data: {loginUser, allTasks:tasks, setAllTasks:setTasks}} = useStore();
+    const {data: {loginUser, allTasks, setAllTasks}} = useStore();
     let emptyTask: Task = {
         userId: loginUser.id,
         userName: loginUser?.name,
@@ -51,12 +51,12 @@ export default function Admin() {
 
 
 
-    const personalTasks = tasks.filter((task: Task) => task.userId === loginUser.id);
+    const personalTasks = allTasks.filter((task: Task) => task.userId === loginUser.id);
 
     useEffect(() => {
         const stored: any = localStorage.getItem('tasks');
         if (stored) {
-            setTasks(JSON.parse(stored))
+            setAllTasks(JSON.parse(stored))
         }
     }, [localStorage.getItem('tasks')]);
 
@@ -93,7 +93,7 @@ export default function Admin() {
         setSubmitted(true);
 
         if (task.title.trim()) {
-            let _tasks = [...tasks];
+            let _tasks = [...allTasks];
             let _task = {...task};
 
             if (task.id) {
@@ -108,13 +108,17 @@ export default function Admin() {
                 toast.current?.show({severity: 'success', summary: 'Successful', detail: 'Task Created', life: 3000});
             }
 
-            setTasks(_tasks);
+            localStorage.setItem('tasks', JSON.stringify(_tasks));
+
+            setAllTasks(_tasks);
             setTaskDialog(false);
             setTask(emptyTask);
         }
     };
 
     const editTask = (task: Task) => {
+        // const stringifyData = JSON.stringify(task);
+        console.log(task)
         setTask({...task});
         setTaskDialog(true);
     };
@@ -125,9 +129,11 @@ export default function Admin() {
     };
 
     const deleteTask = () => {
-        let _tasks = tasks.filter((val:Task) => val.id !== task.id);
+        let _tasks = allTasks.filter((val:Task) => val.id !== task.id);
 
-        setTasks(_tasks);
+        setAllTasks(_tasks);
+        // console.log(_tasks);
+        localStorage.setItem('tasks', JSON.stringify(_tasks));
         setDeleteTaskDialog(false);
         setTask(emptyTask);
         toast.current?.show({severity: 'success', summary: 'Successful', detail: 'Task Deleted', life: 3000});
@@ -136,8 +142,8 @@ export default function Admin() {
     const findIndexById = (id: string) => {
         let index = -1;
 
-        for (let i = 0; i < tasks.length; i++) {
-            if (tasks[i].id === id) {
+        for (let i = 0; i < allTasks.length; i++) {
+            if (allTasks[i].id === id) {
                 index = i;
                 break;
             }
@@ -162,20 +168,19 @@ export default function Admin() {
     };
 
     const deleteSelectedTasks = () => {
-        let _tasks = tasks.filter((val: Task) => !selectedTasks.includes(val));
+        let _tasks = allTasks.filter((val: Task) => !selectedTasks.includes(val));
 
-        setTasks(_tasks);
+        // const stringifyData = localStorage.getItem('tasks');
+        // const parsedData = JSON.parse(stringifyData || '[]');
+        // let localStorageData = parsedData.filter((val: Task) => !selectedTasks.includes(val));
+        // console.log(localStorageData);
+        setAllTasks(_tasks);
+        // console.log(_tasks);
+        localStorage.setItem('tasks', JSON.stringify(_tasks));
         setDeleteTasksDialog(false);
         setSelectedTasks([]);
         toast.current?.show({severity: 'success', summary: 'Successful', detail: 'Tasks Deleted', life: 3000});
     };
-
-    // const onPriorityChange = (e: RadioButtonChangeEvent) => {
-    //     let _task = {...task};
-    //
-    //     _task['priority'] = e.value;
-    //     setTask(_task);
-    // };
 
     const onStatusChange = (e: RadioButtonChangeEvent) => {
         let _task = {...task};
