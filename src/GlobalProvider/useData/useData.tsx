@@ -109,16 +109,6 @@ const UseData = () => {
         }
     }, []);
 
-    // useEffect(() => {
-    //     const stored = localStorage.getItem('loggedInUser');
-    //     if (stored) {
-    //         setLoginUser(JSON.parse(stored));
-    //         console.log(loginUser)
-    //     }
-    // },[localStorage.getItem('loggedInUser')]);
-    // const loggedInUser: userData|| null = JSON.parse(localStorage.getItem('loggedInUser'))|| null;
-
-
     return {
         layoutConfig,
         setLayoutConfig,

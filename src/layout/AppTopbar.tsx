@@ -12,6 +12,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
         menubutton: menubuttonRef.current,
     }));
 
+    console.log("loginUser", loginUser);
     return (
         <div className="layout-topbar">
             <div className="topbar-start">
@@ -26,7 +27,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                 <AppBreadcrumb className="topbar-breadcrumb"></AppBreadcrumb>
             </div>
 
-            <Avatar shape="circle"  onClick={ showProfileSidebar} image={loginUser && loginUser.image? loginUser.imageUrl : "https://imgur.com/a/dih0Vz0"}  className="flex align-items-center justify-content-center mr-2" size="xlarge" />
+            <Avatar shape="circle"  onClick={ showProfileSidebar} image={loginUser?.imageUrl ? `${loginUser?.imageUrl}` : "https://imgur.com/a/dih0Vz0"}  className="flex align-items-center justify-content-center mr-2" size="xlarge" />
             {/*<p*/}
             {/*onClick={showProfileSidebar}>*/}
             {/*    rf*/}

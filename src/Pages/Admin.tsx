@@ -15,13 +15,6 @@ import useStore from '../layout/useStore';
 import {Task} from "../../types/task";
 import { Dropdown } from 'primereact/dropdown';
 
-// interface UsersType {
-//     id?: string;
-//     name?: string;
-//     email?: string;
-//     password?: string;
-//     role?: string;
-// }
 
 
 export default function Admin() {
@@ -34,7 +27,8 @@ export default function Admin() {
         description: '',
         priority: null,
         status: '',
-        assignPerson:null
+        assignPerson:null,
+        documents: ""
     };
     // console.log('allTasks from profile page', tasks)
 
@@ -169,13 +163,7 @@ export default function Admin() {
 
     const deleteSelectedTasks = () => {
         let _tasks = allTasks.filter((val: Task) => !selectedTasks.includes(val));
-
-        // const stringifyData = localStorage.getItem('tasks');
-        // const parsedData = JSON.parse(stringifyData || '[]');
-        // let localStorageData = parsedData.filter((val: Task) => !selectedTasks.includes(val));
-        // console.log(localStorageData);
         setAllTasks(_tasks);
-        // console.log(_tasks);
         localStorage.setItem('tasks', JSON.stringify(_tasks));
         setDeleteTasksDialog(false);
         setSelectedTasks([]);
@@ -205,7 +193,6 @@ export default function Admin() {
 
         // @ts-ignore
         _task[name] = val;
-
         setTask(_task);
     };
 
@@ -249,11 +236,13 @@ export default function Admin() {
         }
     };
 
-    const header = (
-        <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
+    const imageBodyTemplate = (rowData:Task) => {
+        return <img src={`https://primefaces.org/cdn/primereact/images/product/${rowData.documents}`} alt={`${rowData?.documents}`} width="64px" className="shadow-4" />;
+    };
+
+    const header = (<div className="flex flex-wrap gap-2 align-items-center justify-content-between">
             <h4 className="m-0">Manage Tasks</h4>
-        </div>
-    );
+        </div>);
     const taskDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog}/>
@@ -295,8 +284,8 @@ export default function Admin() {
                     <Column field="title" header="Title" sortable style={{minWidth: '16rem'}}></Column>
                     <Column field="description" header="Description" sortable style={{minWidth: '16rem'}}></Column>
                     <Column field="priority" header="Priority" sortable style={{minWidth: '10rem'}}></Column>
-                    <Column field="status" header="Status" body={statusBodyTemplate} sortable
-                            style={{minWidth: '12rem'}}></Column>
+                    <Column field="status" header="Status" body={statusBodyTemplate} sortable style={{minWidth: '12rem'}}></Column>
+                    <Column field="documents" header="Documents" style={{minWidth: '12rem'}} body={imageBodyTemplate}></Column>
                     <Column field="assignPerson" header="Assign person" sortable style={{minWidth: '12rem'}}></Column>
                     <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '12rem'}}></Column>
                 </DataTable>
@@ -311,6 +300,15 @@ export default function Admin() {
                     <InputText id="name" value={task.title} onChange={(e) => onInputChange(e, 'title')} required
                                autoFocus className={classNames({'p-invalid': submitted && !task.title})}/>
                     {submitted && !task.title && <small className="p-error">Title is required.</small>}
+                </div>
+
+                <div className="field">
+                    <label htmlFor="documents" className="font-bold">
+                        Documents
+                    </label>
+                    <InputText id="documents" value={`${task.documents}`} onChange={(e) => onInputChange(e, 'documents')}
+                               autoFocus className={classNames({'p-invalid': submitted && !task.documents})}/>
+
                 </div>
                 <div className="field">
                     <label htmlFor="description" className="font-bold">
@@ -350,6 +348,8 @@ export default function Admin() {
 
                     </div>
                 </div>
+
+
 
             </Dialog>
 

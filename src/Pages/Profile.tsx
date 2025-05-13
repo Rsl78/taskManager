@@ -3,25 +3,21 @@ import {TabView, TabPanel} from 'primereact/tabview';
 import useStore from "../layout/useStore";
 import {InputText} from 'primereact/inputtext';
 import {Toast} from "primereact/toast";
-// import {useNavigate} from "react-router-dom";
 import {useFormik} from "formik";
-// import {Password} from 'primereact/password';
 import {Password} from "primereact/password";
 import {Button} from "primereact/button";
 import {Column} from "primereact/column";
 import {DataTable} from "primereact/datatable";
 import { Avatar } from 'primereact/avatar';
-// import { Badge } from 'primereact/badge';
 import { Dialog } from 'primereact/dialog';
+
 interface UpdateFormValuesError {
     name?: string;
     email?: string;
 }
-
 interface UpdateImageFormValuesError {
     imageUrl?: string;
 }
-
 interface UpdatePasswordFormValuesError {
     oldPassword?: string;
     newPassword?: string;
@@ -44,7 +40,6 @@ const informationValidate = (values: { name: string, email: string }) => {
     }
     return errors;
 };
-
 const passwordValidate = (values: { oldPassword: string, newPassword: string, confirmPassword: string }) => {
     const errors: UpdatePasswordFormValuesError = {};
 
@@ -169,8 +164,7 @@ export default function Profile() {
                     life: 1000
                 });
             },
-        }
-    )
+        })
 
     return (
         <div className="card  ">
@@ -258,7 +252,6 @@ export default function Profile() {
                         </form>
                     </Dialog>
                 </TabPanel>
-
                 {/*Password update tab*/}
                 <TabPanel header="Security" leftIcon="pi pi-cog mr-2">
                     <Toast ref={toast} position="top-right"/>
@@ -318,7 +311,6 @@ export default function Profile() {
                         </form>
                     </div>
                 </TabPanel>
-
                 {/*Tasks tab*/}
                 <TabPanel header="Tasks" leftIcon="pi pi-fw pi-list mr-2">
                     <DataTable value={personalTasks} removableSort tableStyle={{ minWidth: '50rem' }}>
@@ -330,8 +322,6 @@ export default function Profile() {
                         <Column field="status" header="Status" sortable ></Column>
                     </DataTable>
                 </TabPanel>
-
-
             </TabView>
         </div>
     )

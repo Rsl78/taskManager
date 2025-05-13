@@ -7,5 +7,6 @@ export interface Task {
     userId: string;
     userName?: string;
     assignPerson?: string|null;
+    documents?:string | undefined;
 }
 

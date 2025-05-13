@@ -102,7 +102,7 @@ const SignIn = () => {
                         {formik.errors.password ? <div className={"text-red-500"}>{formik.errors.password}</div> : null}
 
                         <div className={"flex mt-3 justify-content-center"}>
-                            <Button type={"submit"} label="Submit"/>
+                            <Button className="w-full" type={"submit"} label="Submit"/>
                         </div>
                     </form>
 
